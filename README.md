@@ -1,13 +1,13 @@
 
-# Thomas Young — Static Site
+# Thomas Young - Static Site
 
 A small, fast, accessible static site inspired by clean personal-photo layouts (e.g., category grids leading to galleries).
 
 ## Files
-- `index.html` — landing page with hero and featured cards
+- `index.html` - landing page with hero and featured cards
 - `about.html`, `projects.html`, `photos.html`, `contact.html`
 - `style.css`, `script.js`
-- `assets/` — icons and placeholders
+- `assets/` - icons and placeholders
 - `robots.txt`, `sitemap.xml`
 
 ## Local preview

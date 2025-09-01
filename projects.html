@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Projects — Thomas Young</title>
-  <meta name="description" content="Thomas Young — technologist, MSP founder, and home‑automation tinkerer in Sterling, Illinois." />
+  <title>Projects - Thomas Young</title>
+  <meta name="description" content="Thomas Young - technologist, MSP founder, and home-automation tinkerer in Sterling, Illinois." />
   <link rel="canonical" href="https://thomasyou.ng/" />
   <link rel="preload" href="style.css" as="style" />
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Thomas Young — Technologist & MSP Founder" />
+  <meta property="og:title" content="Thomas Young - Technologist and Home Automation Tinkerer" />
   <meta property="og:description" content="Projects, photos, notes, and ways to reach me." />
   <meta property="og:image" content="https://thomasyou.ng/og.png" />
   <meta property="og:url" content="https://thomasyou.ng/" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="theme-color" content="#0f172a" />
   <script type="application/ld+json">
-  {"@context": "https://schema.org", "@type": "Person", "name": "Thomas Young", "url": "https://thomasyou.ng/", "jobTitle": "Technologist & MSP Founder", "homeLocation": "Sterling, IL", "sameAs": ["https://github.com/", "https://www.linkedin.com/", "https://mastodon.social/"]}
+  {"@context": "https://schema.org", "@type": "Person", "name": "Thomas Young", "url": "https://thomasyou.ng/", "jobTitle": "Technologist and Home Automation Tinkerer", "homeLocation": "Sterling, IL", "sameAs": ["https://github.com/", "https://www.linkedin.com/", "https://mastodon.social/"]}
   </script>
 </head>
 
@@ -53,24 +53,27 @@
     <ul class="bullets">
       <li>Frigate NVR with Coral TPU and Axis cameras</li>
       <li>Zigbee2MQTT, custom sensors, and energy dashboards</li>
-      <li>Node‑RED flows for friendly notifications</li>
+      <li>Node-RED flows for friendly notifications</li>
     </ul>
     <a class="btn small" href="#" aria-disabled="true">Read build notes (soon)</a>
   </section>
 
-  <section id="msp" class="project">
-    <h2>Cat 5 Computers (MSP)</h2>
-    <p>I'm formalizing a practical managed‑services offering for local businesses, with a focus on security, backups, and responsiveness.</p>
+  
+  <section id="esphome-plants" class="project">
+    <h2>ESPHome Plant Monitoring Hardware</h2>
+    <p>I build small ESP32 boards that report soil moisture, temperature, humidity, and light to Home Assistant using ESPHome. Highlights:</p>
     <ul class="bullets">
-      <li>Opinionated baseline: MFA, patching, EDR, offsite backups</li>
-      <li>Simple pricing and plain‑English agreements</li>
-      <li>Documentation first — so there are no surprises</li>
+      <li>Capacitive soil moisture sensors with analog read averaging and calibration</li>
+      <li>SHT31 or BME280 for temp and humidity, optional BH1750 for light</li>
+      <li>Deep sleep for battery builds, high update rate for mains builds</li>
+      <li>MQTT state publishing, dashboards, and friendly notifications</li>
+      <li>OTA updates and 3D printed enclosures</li>
     </ul>
-    <a class="btn small" href="#" aria-disabled="true">Service overview (soon)</a>
+    <a class="btn small" href="#" aria-disabled="true">Build notes (soon)</a>
   </section>
 
   <section id="energy" class="project">
-    <h2>Live Energy & Meter Experiments</h2>
+    <h2>Live Energy and Meter Experiments</h2>
     <p>Exploring ways to gather <em>live</em> usage data without painful portals. Results and code coming soon.</p>
   </section>
 
