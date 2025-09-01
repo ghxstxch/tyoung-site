@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projects — Thomas Young</title>
+  <meta name="description" content="Thomas Young — technologist, MSP founder, and home‑automation tinkerer in Sterling, Illinois." />
+  <link rel="canonical" href="https://thomasyou.ng/" />
+  <link rel="preload" href="style.css" as="style" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Thomas Young — Technologist & MSP Founder" />
+  <meta property="og:description" content="Projects, photos, notes, and ways to reach me." />
+  <meta property="og:image" content="https://thomasyou.ng/og.png" />
+  <meta property="og:url" content="https://thomasyou.ng/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#0f172a" />
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@type": "Person", "name": "Thomas Young", "url": "https://thomasyou.ng/", "jobTitle": "Technologist & MSP Founder", "homeLocation": "Sterling, IL", "sameAs": ["https://github.com/", "https://www.linkedin.com/", "https://mastodon.social/"]}
+  </script>
+</head>
+
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" title="Thomas Young">TY</a>
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
+          <span class="sr-only">Menu</span>
+          ☰
+        </button>
+        <ul id="nav-menu" class="nav-list">
+          <li><a  href="photos.html">Photos</a></li>
+          <li><a aria-current="page" href="projects.html">Projects</a></li>
+          <li><a  href="about.html">About</a></li>
+          <li><a  href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="content" class="container">
+
+  <section class="prose">
+    <h1>Projects</h1>
+    <p>Selected projects and notes. Everything is documented as plainly as possible so you can reproduce or adapt it.</p>
+  </section>
+
+  <section id="home-automation" class="project">
+    <h2>Home Assistant + OPNsense</h2>
+    <p>My home network uses multiple VLANs (AdminNet, IoT, etc.), <em>OPNsense</em> for routing, and <em>Home Assistant</em> for automation. Highlights:</p>
+    <ul class="bullets">
+      <li>Frigate NVR with Coral TPU and Axis cameras</li>
+      <li>Zigbee2MQTT, custom sensors, and energy dashboards</li>
+      <li>Node‑RED flows for friendly notifications</li>
+    </ul>
+    <a class="btn small" href="#" aria-disabled="true">Read build notes (soon)</a>
+  </section>
+
+  <section id="msp" class="project">
+    <h2>Cat 5 Computers (MSP)</h2>
+    <p>I'm formalizing a practical managed‑services offering for local businesses, with a focus on security, backups, and responsiveness.</p>
+    <ul class="bullets">
+      <li>Opinionated baseline: MFA, patching, EDR, offsite backups</li>
+      <li>Simple pricing and plain‑English agreements</li>
+      <li>Documentation first — so there are no surprises</li>
+    </ul>
+    <a class="btn small" href="#" aria-disabled="true">Service overview (soon)</a>
+  </section>
+
+  <section id="energy" class="project">
+    <h2>Live Energy & Meter Experiments</h2>
+    <p>Exploring ways to gather <em>live</em> usage data without painful portals. Results and code coming soon.</p>
+  </section>
+
+  </main>
+  <footer class="site-footer">
+    <div class="container">
+      <p>© 2025 Thomas Young • Sterling, IL • <a href="assets/key.txt" download>PGP</a></p>
+    </div>
+  </footer>
+  <script src="script.js" defer></script>
+</body>
+</html>
