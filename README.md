@@ -19,13 +19,10 @@ python3 -m http.server 8080
 ```
 
 ## Deploy (GitHub Pages)
-1. Create a repo (e.g., `thomas-young-site`).
+1. Create a repo (e.g., `my-site`).
 2. Commit these files to the root and push to `main`.
 3. In repo settings → Pages: Source = `Deploy from a branch`, Branch = `main` / root.
-4. Your site will be live at `https://<username>.github.io/thomas-young-site/`.
-
-## Deploy (Netlify)
-- Drag-drop the folder on https://app.netlify.com/drop or connect your repo.
+4. Your site will be live at `https://<username>.github.io/my-site/`.
 
 ## Customize
 - Replace `assets/cover.jpg` with a real photo (keep the same name for simplicity).
