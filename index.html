@@ -3,92 +3,176 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Thomas Young - Technologist and Home Automation Tinkerer</title>
-  <meta name="description" content="Thomas Young - technician and home-automation tinkerer in Sterling, Illinois." />
-  <link rel="canonical" href="https://thomasyou.ng/" />
-  <link rel="preload" href="style.css" as="style" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Thomas Young - Technician and Home Automation Tinkerer" />
-  <meta property="og:description" content="Projects, photos, notes, and ways to reach me." />
-  <meta property="og:image" content="https://thomasyou.ng/og.png" />
-  <meta property="og:url" content="https://thomasyou.ng/" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="theme-color" content="#0f172a" />
-  <script type="application/ld+json">
-  {"@context": "https://schema.org", "@type": "Person", "name": "Thomas Young", "url": "https://thomasyou.ng/", "jobTitle": "Technician and Home Automation Tinkerer", "homeLocation": "Sterling, IL", "sameAs": ["https://github.com/", "https://www.linkedin.com/", "https://mastodon.social/"]}
-  </script>
+  <title>Under construction</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root{
+      --bg: #0b1020;
+      --panel: #0f172a;
+      --text: #e5eaf5;
+      --muted: #9aa4c4;
+      --ring: #38bdf8;
+      --accent: #0ea5e9;
+      --accent-2: #22d3ee;
+      --border: #1b2543;
+      --card: #11192e;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg: #f7f8fb;
+        --panel: #ffffff;
+        --text: #0e1325;
+        --muted: #5b647e;
+        --ring: #0284c7;
+        --accent: #0ea5e9;
+        --accent-2: #22d3ee;
+        --border: #e5e7eb;
+        --card: #ffffff;
+      }
+    }
+    *{box-sizing:border-box}
+    html{height:100%}
+    body{
+      margin:0; min-height:100%;
+      font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, #13203a 0%, transparent 60%),
+        var(--bg);
+      display:grid; place-items:center;
+      padding:24px;
+    }
+    a{color:var(--accent)}
+    a:hover{color:var(--accent-2)}
+    .skip-link{position:absolute;left:-9999px}
+    .skip-link:focus{left:16px;top:12px;background:var(--panel);border:1px dashed var(--ring);padding:6px 10px;border-radius:8px;z-index:999}
+    .card{
+      width:clamp(280px, 92vw, 780px);
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:24px;
+      box-shadow:0 18px 60px rgba(0,0,0,.35);
+    }
+    .header{
+      display:flex; align-items:center; gap:14px; margin-bottom:10px;
+    }
+    .brand{
+      display:inline-grid; place-items:center;
+      width:42px; height:42px; border-radius:10px;
+      font-weight:800; color:#06222b;
+      background:linear-gradient(135deg, var(--accent-2), var(--accent));
+      user-select:none;
+    }
+    h1{margin:8px 0 4px; line-height:1.15; font-size:clamp(22px, 3vw, 34px)}
+    p.lead{color:var(--muted); margin:0 0 14px}
+    .illustration{
+      display:grid; grid-template-columns: 1.2fr .8fr; gap:18px; align-items:center;
+    }
+    @media (max-width:720px){ .illustration{grid-template-columns:1fr} }
+    .pane{
+      padding:16px; border:1px solid var(--border); border-radius:14px; background:var(--panel);
+    }
+    .progress{
+      height:14px; border-radius:999px; overflow:hidden; border:1px solid var(--border);
+      background: repeating-linear-gradient(45deg, rgba(56,189,248,.18) 0 10px, rgba(56,189,248,.35) 10px 20px);
+      position:relative;
+      mask-image: radial-gradient(white, black);
+    }
+    .progress::before{
+      content:""; position:absolute; inset:-2px; 
+      background: repeating-linear-gradient(90deg, transparent 0 16px, rgba(255,255,255,.10) 16px 24px);
+      animation: move 1.4s linear infinite;
+    }
+    @keyframes move { to { transform: translateX(24px); } }
+    @media (prefers-reduced-motion: reduce){
+      .progress::before{ animation: none; }
+    }
+    .status{ display:flex; align-items:center; gap:10px; color:var(--muted); font-size:.95rem }
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, #fff 0 2px, var(--accent) 3px, var(--accent-2) 80%);
+      box-shadow: 0 0 18px rgba(56,189,248,.6);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(0.85); opacity: .7; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .dot{ animation: none }
+    }
+    .btns{ display:flex; gap:10px; margin-top:14px; flex-wrap:wrap }
+    .btn{
+      display:inline-block; text-decoration:none; font-weight:700;
+      background:var(--accent); color:#06222b; border:1px solid transparent;
+      padding:10px 14px; border-radius:12px;
+    }
+    .btn.ghost{ background:transparent; color:var(--text); border-color:var(--border) }
+    .note{ margin-top:12px; font-size:.92rem; color:var(--muted) }
+    .cone{
+      width:100%; height:auto;
+      border:1px solid var(--border); border-radius:14px; background:linear-gradient(180deg, #0f172a, #0b1020);
+      padding:10px;
+    }
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
+  </style>
 </head>
-
 <body>
-  <a class="skip-link" href="#content">Skip to content</a>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html" title="Thomas Young">TY</a>
-      <nav class="nav" aria-label="Primary">
-        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
-          <span class="sr-only">Menu</span>
-          ☰
-        </button>
-        <ul id="nav-menu" class="nav-list">
-          <li><a  href="photos.html">Photos</a></li>
-          <li><a  href="projects.html">Projects</a></li>
-          <li><a  href="about.html">About</a></li>
-          <li><a  href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-  <main id="content" class="container">
-
-  <section class="hero">
-    <div class="hero-inner">
-      <h1>Thomas Young</h1>
-      <p class="tagline">Technologist and home-automation tinkerer in Sterling, Illinois.</p>
-      <div class="cta-row">
-        <a class="btn" href="projects.html">See Projects</a>
-        <a class="btn ghost" href="photos.html">Browse Photos</a>
+  <a href="#content" class="skip-link">Skip to content</a>
+  <main id="content" class="card" role="main">
+    <div class="header">
+      <div class="brand" aria-hidden="true">TY</div>
+      <div>
+        <h1>Under construction</h1>
+        <p class="lead">This page is being built. Please check back soon.</p>
       </div>
     </div>
-    <figure class="hero-media">
-      <img src="assets/cover.jpg" alt="Abstract tech texture background" loading="lazy" />
-    </figure>
-  </section>
 
-  <section class="grid-section">
-    <h2 class="section-title">Featured</h2>
-    <div class="card-grid">
-      <a class="card" href="projects.html#home-automation">
-        <img src="assets/ph-homeassistant.svg" alt="" aria-hidden="true" />
-        <div class="card-body">
-          <h3>Home Assistant + OPNsense</h3>
-          <p>My smart-home stack with VLANs, energy sensors, Frigate, and custom Node-RED flows.</p>
+    <section class="illustration">
+      <div class="pane">
+        <svg class="cone" viewBox="0 0 640 360" role="img" aria-labelledby="coneTitle coneDesc" xmlns="http://www.w3.org/2000/svg">
+          <title id="coneTitle">Work in progress illustration</title>
+          <desc id="coneDesc">A traffic cone, gear, and wrench to indicate site updates</desc>
+          <defs>
+            <linearGradient id="g1" x1="0" x2="1">
+              <stop stop-color="#22d3ee"/><stop offset="1" stop-color="#0ea5e9"/>
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="640" height="360" rx="12" fill="#0f172a"/>
+          <g transform="translate(80,40)">
+            <rect x="24" y="220" width="360" height="16" rx="8" fill="#1b2543"/>
+            <rect x="24" y="192" width="360" height="16" rx="8" fill="#1b2543"/>
+            <rect x="24" y="164" width="360" height="16" rx="8" fill="#1b2543"/>
+          </g>
+          <g transform="translate(380,64)">
+            <path d="M120 16 l56 216 H-16 L40 16 Z" fill="url(#g1)" stroke="#093347" stroke-width="6" />
+            <rect x="-24" y="232" width="224" height="24" rx="10" fill="#1b2543"/>
+            <rect x="16" y="64" width="144" height="18" rx="9" fill="#ffffff22"/>
+            <rect x="8" y="110" width="160" height="18" rx="9" fill="#ffffff22"/>
+          </g>
+          <g transform="translate(56,70)">
+            <circle cx="120" cy="140" r="46" fill="#1b2543"/>
+            <circle cx="120" cy="140" r="22" fill="url(#g1)"/>
+            <rect x="176" y="122" width="160" height="36" rx="18" fill="#1b2543" />
+          </g>
+        </svg>
+        <div class="note">Fun fact: I am also building custom ESPHome plant monitors. More details soon.</div>
+      </div>
+      <div class="pane" aria-live="polite">
+        <div class="status" role="status" aria-label="Build status">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Build running</span>
         </div>
-      </a>
-      <a class="card" href="projects.html#esphome-plants">
-        <img src="assets/ph-briefcase.svg" alt="" aria-hidden="true" />
-        <div class="card-body">
-          <h3>ESPHome Plant Monitors</h3>
-          <p>Custom ESP32-based sensors for soil moisture, temperature, and light.</p>
+        <div class="progress" style="margin:10px 0 4px" aria-hidden="true"></div>
+        <div class="btns">
+          <a class="btn" href="index.html">Back to home</a>
+          <a class="btn ghost" href="mailto:hello@thomasyou.ng?subject=Ping%20me%20when%20this%20is%20ready">Notify me</a>
         </div>
-      </a>
-      <a class="card" href="photos.html">
-        <img src="assets/ph-camera.svg" alt="" aria-hidden="true" />
-        <div class="card-body">
-          <h3>Photo Sets</h3>
-          <p>Galleries by theme - projects, city, nature, and more.</p>
-        </div>
-      </a>
-    </div>
-  </section>
-
+        <p class="note">If you expected content here, it is likely moving to this new layout. Thanks for your patience.</p>
+      </div>
+    </section>
   </main>
-  <footer class="site-footer">
-    <div class="container">
-      <p>© 2025 Thomas Young • Sterling, IL • <a href="assets/key.txt" download>PGP</a></p>
-    </div>
-  </footer>
-  <script src="script.js" defer></script>
 </body>
 </html>
