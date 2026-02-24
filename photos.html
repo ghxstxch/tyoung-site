@@ -1,78 +1,66 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Photos - Thomas Young</title>
-  <meta name="description" content="Thomas Young - technician and home-automation tinkerer in Sterling, Illinois." />
-  <link rel="canonical" href="https://thomasyou.ng/" />
-  <link rel="preload" href="style.css" as="style" />
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Thomas Young - Technologist and Home Automation Tinkerer" />
-  <meta property="og:description" content="Projects, photos, notes, and ways to reach me." />
-  <meta property="og:image" content="https://thomasyou.ng/og.png" />
-  <meta property="og:url" content="https://thomasyou.ng/" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="theme-color" content="#0f172a" />
-  <script type="application/ld+json">
-  {"@context": "https://schema.org", "@type": "Person", "name": "Thomas Young", "url": "https://thomasyou.ng/", "jobTitle": "Technologist and Home Automation Tinkerer", "homeLocation": "Sterling, IL", "sameAs": ["https://github.com/", "https://www.linkedin.com/", "https://mastodon.social/"]}
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photos | T-Young</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; }
+        .img-card { background: #1e293b; border: 1px solid #334155; overflow: hidden; border-radius: 12px; }
+    </style>
 </head>
+<body class="p-8">
 
-<body>
-  <a class="skip-link" href="#content">Skip to content</a>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="brand" href="index.html" title="Thomas Young">TY</a>
-      <nav class="nav" aria-label="Primary">
-        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">
-          <span class="sr-only">Menu</span>
-          ☰
-        </button>
-        <ul id="nav-menu" class="nav-list">
-          <li><a aria-current="page" href="photos.html">Photos</a></li>
-          <li><a  href="projects.html">Projects</a></li>
-          <li><a  href="about.html">About</a></li>
-          <li><a  href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-  <main id="content" class="container">
+    <header class="max-w-6xl mx-auto mb-12 flex justify-between items-end">
+        <div>
+            <a href="index.html" class="text-sky-500 hover:underline text-sm uppercase tracking-widest font-bold">← Back Home</a>
+            <h1 class="text-3xl font-bold mt-2">Gallery</h1>
+        </div>
+    </header>
 
-  <section class="prose">
-    <h1>Photo Sets</h1>
-    <p>Browse by theme. Each set opens a lightweight gallery.</p>
-  </section>
-  <section class="grid-section">
-    <div class="card-grid photos-grid">
-      <a class="card photo" href="photos-projects.html">
-        <img src="assets/ph-grid-1.svg" alt="" aria-hidden="true" />
-        <div class="card-body"><h3>Projects</h3><p>Build diaries and gear.</p></div>
-      </a>
-      <a class="card photo" href="photos-city.html">
-        <img src="assets/ph-grid-2.svg" alt="" aria-hidden="true" />
-        <div class="card-body"><h3>City</h3><p>Sterling, Rock Falls, Peoria.</p></div>
-      </a>
-      <a class="card photo" href="photos-nature.html">
-        <img src="assets/ph-grid-3.svg" alt="" aria-hidden="true" />
-        <div class="card-body"><h3>Nature</h3><p>Prairie and sky.</p></div>
-      </a>
-      <a class="card photo" href="photos-misc.html">
-        <img src="assets/ph-grid-4.svg" alt="" aria-hidden="true" />
-        <div class="card-body"><h3>Misc</h3><p>Odds and ends.</p></div>
-      </a>
-    </div>
-  </section>
+    <main id="gallery-container" class="max-w-6xl mx-auto space-y-12">
+        <div id="status" class="text-slate-500 animate-pulse">Scanning assets...</div>
+    </main>
 
-  </main>
-  <footer class="site-footer">
-    <div class="container">
-      <p>© 2025 Thomas Young • Sterling, IL • <a href="assets/key.txt" download>PGP</a></p>
-    </div>
-  </footer>
-  <script src="script.js" defer></script>
+    <script>
+        const USER = 'ghxstxch';
+        const REPO = 'tyoung-site';
+
+        async function loadGallery() {
+            const container = document.getElementById('gallery-container');
+            try {
+                const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/assets`);
+                const items = await res.json();
+                document.getElementById('status').remove();
+
+                for (const item of items) {
+                    if (item.type === 'dir') {
+                        const section = document.createElement('section');
+                        section.innerHTML = `
+                            <h2 class="text-xl font-bold mb-4 border-b border-slate-800 pb-2 capitalize">${item.name.replace(/-/g, ' ')}</h2>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="grid-${item.name}"></div>
+                        `;
+                        container.appendChild(section);
+                        fetchImages(item.path, document.getElementById(`grid-${item.name}`));
+                    }
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        async function fetchImages(path, grid) {
+            const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${path}`);
+            const files = await res.json();
+            files.forEach(file => {
+                if (file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
+                    const div = document.createElement('div');
+                    div.className = 'img-card';
+                    div.innerHTML = `<img src="${file.download_url}" class="w-full h-40 object-cover hover:opacity-80 transition cursor-pointer">`;
+                    grid.appendChild(div);
+                }
+            });
+        }
+        loadGallery();
+    </script>
 </body>
 </html>
