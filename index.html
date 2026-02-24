@@ -3,146 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T-Young x95</title>
-    <link rel="stylesheet" href="https://unpkg.com/95.css">
+    <title>T-Young OS</title>
+    <link rel="stylesheet" href="https://unpkg.com/7.css@0.10.2/dist/95.css">
     <style>
         :root { --teal: #008080; }
         body { background-color: var(--teal); margin: 0; padding: 0; font-family: "Pixelated MS Sans Serif", Arial, sans-serif; height: 100vh; overflow: hidden; }
         
-        /* Desktop Icons */
-        #desktop { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, 80px); grid-template-rows: repeat(auto-fill, 80px); gap: 20px; height: calc(100vh - 40px); }
-        .icon { text-align: center; cursor: pointer; user-select: none; border: 1px solid transparent; }
-        .icon:hover { background: rgba(0,0,0,0.1); border: 1px dotted #fff; }
+        #desktop { 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            flex-wrap: wrap; 
+            align-content: flex-start; 
+            gap: 20px; 
+            height: calc(100vh - 40px); 
+        }
+
+        .icon { 
+            width: 75px; 
+            text-align: center; 
+            cursor: pointer; 
+            user-select: none; 
+            padding: 5px;
+        }
+        .icon:hover { background: rgba(0,0,0,0.1); outline: 1px dotted #fff; }
         .icon img { width: 32px; height: 32px; display: block; margin: 0 auto 5px; image-rendering: pixelated; }
-        .icon span { color: white; font-size: 11px; text-shadow: 1px 1px #000; display: block; overflow-wrap: break-word; }
+        .icon span { color: white; font-size: 11px; text-shadow: 1px 1px #000; line-height: 1.2; display: block; }
 
-        /* Window Styling */
-        .window { position: absolute; min-width: 300px; max-width: 90vw; z-index: 10; resize: both; overflow: auto; }
-        .folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; padding: 10px; background: white; border: 2px inset #fff; min-height: 200px; }
-        .asset-preview { text-align: center; font-size: 10px; }
-        .asset-preview img { width: 100%; border: 1px solid #777; margin-bottom: 5px; }
+        .window { position: absolute; min-width: 300px; z-index: 10; box-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        .folder-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); 
+            gap: 15px; 
+            padding: 15px; 
+            background: white; 
+            border: 2px inset #dfdfdf; 
+            min-height: 150px; 
+            max-height: 400px;
+            overflow-y: auto;
+        }
 
-        /* Taskbar */
+        .asset-preview { text-align: center; font-size: 10px; color: black; }
+        .asset-preview img { max-width: 64px; height: auto; border: 1px solid #777; margin-bottom: 4px; }
+
         .taskbar { position: fixed; bottom: 0; left: 0; right: 0; height: 30px; background: #c0c0c0; border-top: 2px solid #fff; display: flex; align-items: center; padding: 2px; z-index: 9999; }
-        .start-btn { font-weight: bold; padding: 2px 6px; border: 2px solid; border-color: #fff #808080 #808080 #fff; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+        .start-btn { font-weight: bold; padding: 2px 6px; border: 2px solid; border-color: #fff #808080 #808080 #fff; display: flex; align-items: center; gap: 4px; cursor: pointer; height: 22px; }
         .start-btn:active { border-color: #808080 #fff #fff #808080; }
-        .time { margin-left: auto; border: 2px inset #fff; padding: 2px 8px; font-size: 12px; }
+        .time { margin-left: auto; border: 2px inset #fff; padding: 2px 8px; font-size: 12px; background: #c0c0c0; }
     </style>
 </head>
 <body>
 
 <div id="desktop">
-    <div class="icon" onclick="openFolder('assets/ph-nature', 'Nature Photos')">
-        <img src="https://win95.xyz/icons/directory_closed-4.png">
-        <span>ph-nature</span>
     </div>
-    
-    <div class="icon" onclick="alert('ESPHome Terminal v1.0\nStatus: Connected')">
-        <img src="https://win95.xyz/icons/msdos-0.png">
-        <span>ESPHome</span>
-    </div>
-</div>
 
 <div class="taskbar">
     <div class="start-btn">
         <img src="https://win95.xyz/icons/windows-0.png" width="16">
         Start
     </div>
-    <div class="time" id="clock">12:00 PM</div>
+    <div class="time" id="clock"></div>
 </div>
 
 <script>
     const USER = 'ghxstxch';
     const REPO = 'tyoung-site';
+    const desktop = document.getElementById('desktop');
 
-    // 1. Clock functionality
+    // Initialize Clock
     function updateClock() {
-        const now = new Date();
-        document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        document.getElementById('clock').innerText = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
     }
-    setInterval(updateClock, 1000);
-    updateClock();
+    setInterval(updateClock, 1000); updateClock();
 
-    // 2. Dynamic Folder Opening
+    // 1. AUTO-POPULATE DESKTOP
+    async function initDesktop() {
+        try {
+            const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/assets`);
+            const items = await res.json();
+
+            items.forEach(item => {
+                if (item.type === 'dir') {
+                    createDesktopIcon(item.name, item.path);
+                }
+            });
+        } catch (e) {
+            console.error("Failed to load desktop icons", e);
+        }
+    }
+
+    function createDesktopIcon(name, path) {
+        const div = document.createElement('div');
+        div.className = 'icon';
+        div.onclick = () => openFolder(path, name);
+        div.innerHTML = `
+            <img src="https://win95.xyz/icons/directory_closed-4.png">
+            <span>${name}</span>
+        `;
+        desktop.appendChild(div);
+    }
+
+    // 2. OPEN WINDOWS
     async function openFolder(path, title) {
-        // Create window element
+        const winId = `win-${path.replace(/\//g, '-')}`;
+        if(document.getElementById(winId)) return; // Don't open same folder twice
+
         const win = document.createElement('div');
         win.className = 'window';
-        win.style.top = '50px';
-        win.style.left = '100px';
+        win.id = winId;
+        win.style.top = '100px';
+        win.style.left = '150px';
         
         win.innerHTML = `
             <div class="title-bar">
-                <div class="title-bar-text">Exploring - C:/${path}</div>
+                <div class="title-bar-text">C:/${path}</div>
                 <div class="title-bar-controls">
                     <button aria-label="Close" onclick="this.closest('.window').remove()"></button>
                 </div>
             </div>
             <div class="window-body">
-                <p>Select an item to view its properties.</p>
-                <div class="folder-grid" id="grid-${path.replace(/\//g, '-')}">
-                    Loading files...
-                </div>
-            </div>
-            <div class="status-bar">
-                <p class="status-bar-field">Object(s) found</p>
-                <p class="status-bar-field">My Computer</p>
+                <div class="folder-grid">Loading...</div>
             </div>
         `;
         document.body.appendChild(win);
+        makeDraggable(win);
 
         try {
             const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${path}`);
             const files = await res.json();
-            const grid = document.getElementById(`grid-${path.replace(/\//g, '-')}`);
-            grid.innerHTML = ''; // Clear loading
+            const grid = win.querySelector('.folder-grid');
+            grid.innerHTML = '';
 
             files.forEach(file => {
                 const item = document.createElement('div');
                 item.className = 'asset-preview';
+                const isImg = file.name.match(/\.(jpg|jpeg|png|gif)$/i);
                 
-                if (file.type === 'dir') {
-                    item.innerHTML = `<img src="https://win95.xyz/icons/directory_closed-4.png"><br>${file.name}`;
-                    item.onclick = () => openFolder(file.path, file.name);
-                } else if (file.name.match(/\.(jpg|jpeg|png|gif)$/i)) {
-                    item.innerHTML = `<img src="${file.download_url}"><br>${file.name}`;
-                }
+                item.innerHTML = `
+                    <img src="${isImg ? file.download_url : 'https://win95.xyz/icons/file_lines-1.png'}">
+                    <br>${file.name}
+                `;
                 grid.appendChild(item);
             });
         } catch (e) {
-            alert("Error accessing drive C: " + e.message);
+            win.querySelector('.folder-grid').innerText = "Access denied.";
         }
-        
-        makeDraggable(win);
     }
 
-    // 3. Basic Dragging
     function makeDraggable(el) {
         let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-        const header = el.querySelector('.title-bar');
-        header.onmousedown = dragMouseDown;
-
-        function dragMouseDown(e) {
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            document.onmouseup = closeDragElement;
-            document.onmousemove = elementDrag;
-        }
-
-        function elementDrag(e) {
-            pos1 = pos3 - e.clientX;
-            pos2 = pos4 - e.clientY;
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            el.style.top = (el.offsetTop - pos2) + "px";
-            el.style.left = (el.offsetLeft - pos1) + "px";
-        }
-
-        function closeDragElement() {
-            document.onmouseup = null;
-            document.onmousemove = null;
-        }
+        el.querySelector('.title-bar').onmousedown = (e) => {
+            pos3 = e.clientX; pos4 = e.clientY;
+            document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
+            document.onmousemove = (e) => {
+                pos1 = pos3 - e.clientX; pos2 = pos4 - e.clientY;
+                pos3 = e.clientX; pos4 = e.clientY;
+                el.style.top = (el.offsetTop - pos2) + "px";
+                el.style.left = (el.offsetLeft - pos1) + "px";
+            };
+        };
     }
+
+    initDesktop();
 </script>
 
 </body>
