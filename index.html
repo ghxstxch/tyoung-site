@@ -3,101 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T-Young OS</title>
+    <title>T-Young x95</title>
     <link rel="stylesheet" href="https://unpkg.com/95.css">
     <style>
-        body { background-color: #008080; margin: 0; padding: 20px; font-family: "Pixelated MS Sans Serif", Arial, sans-serif; height: 100vh; overflow: hidden; }
-        #desktop { display: flex; flex-wrap: wrap; gap: 20px; align-content: flex-start; height: calc(100% - 40px); }
-        .window { width: 300px; margin: 10px; display: inline-block; vertical-align: top; }
-        .window-body img { width: 100%; height: auto; display: block; image-rendering: pixelated; border: 1px solid #000; }
-        .status-bar-field { font-size: 10px; }
-        /* Taskbar styling */
-        .taskbar { position: fixed; bottom: 0; left: 0; width: 100%; height: 35px; background: #c0c0c0; border-top: 2px solid #fff; display: flex; align-items: center; padding: 2px; z-index: 999; }
-        .start-button { font-weight: bold; display: flex; align-items: center; padding: 2px 6px; border: 2px solid; border-color: #fff #808080 #808080 #fff; cursor: pointer; }
+        :root { --teal: #008080; }
+        body { background-color: var(--teal); margin: 0; padding: 0; font-family: "Pixelated MS Sans Serif", Arial, sans-serif; height: 100vh; overflow: hidden; }
+        
+        /* Desktop Icons */
+        #desktop { padding: 20px; display: grid; grid-template-columns: repeat(auto-fill, 80px); grid-template-rows: repeat(auto-fill, 80px); gap: 20px; height: calc(100vh - 40px); }
+        .icon { text-align: center; cursor: pointer; user-select: none; border: 1px solid transparent; }
+        .icon:hover { background: rgba(0,0,0,0.1); border: 1px dotted #fff; }
+        .icon img { width: 32px; height: 32px; display: block; margin: 0 auto 5px; image-rendering: pixelated; }
+        .icon span { color: white; font-size: 11px; text-shadow: 1px 1px #000; display: block; overflow-wrap: break-word; }
+
+        /* Window Styling */
+        .window { position: absolute; min-width: 300px; max-width: 90vw; z-index: 10; resize: both; overflow: auto; }
+        .folder-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 10px; padding: 10px; background: white; border: 2px inset #fff; min-height: 200px; }
+        .asset-preview { text-align: center; font-size: 10px; }
+        .asset-preview img { width: 100%; border: 1px solid #777; margin-bottom: 5px; }
+
+        /* Taskbar */
+        .taskbar { position: fixed; bottom: 0; left: 0; right: 0; height: 30px; background: #c0c0c0; border-top: 2px solid #fff; display: flex; align-items: center; padding: 2px; z-index: 9999; }
+        .start-btn { font-weight: bold; padding: 2px 6px; border: 2px solid; border-color: #fff #808080 #808080 #fff; display: flex; align-items: center; gap: 4px; cursor: pointer; }
+        .start-btn:active { border-color: #808080 #fff #fff #808080; }
+        .time { margin-left: auto; border: 2px inset #fff; padding: 2px 8px; font-size: 12px; }
     </style>
 </head>
 <body>
 
-    <div id="desktop">
-        <div class="window" id="loading-msg">
+<div id="desktop">
+    <div class="icon" onclick="openFolder('assets/ph-nature', 'Nature Photos')">
+        <img src="https://win95.xyz/icons/directory_closed-4.png">
+        <span>ph-nature</span>
+    </div>
+    
+    <div class="icon" onclick="alert('ESPHome Terminal v1.0\nStatus: Connected')">
+        <img src="https://win95.xyz/icons/msdos-0.png">
+        <span>ESPHome</span>
+    </div>
+</div>
+
+<div class="taskbar">
+    <div class="start-btn">
+        <img src="https://win95.xyz/icons/windows-0.png" width="16">
+        Start
+    </div>
+    <div class="time" id="clock">12:00 PM</div>
+</div>
+
+<script>
+    const USER = 'ghxstxch';
+    const REPO = 'tyoung-site';
+
+    // 1. Clock functionality
+    function updateClock() {
+        const now = new Date();
+        document.getElementById('clock').innerText = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // 2. Dynamic Folder Opening
+    async function openFolder(path, title) {
+        // Create window element
+        const win = document.createElement('div');
+        win.className = 'window';
+        win.style.top = '50px';
+        win.style.left = '100px';
+        
+        win.innerHTML = `
             <div class="title-bar">
-                <div class="title-bar-text">System Status</div>
+                <div class="title-bar-text">Exploring - C:/${path}</div>
+                <div class="title-bar-controls">
+                    <button aria-label="Close" onclick="this.closest('.window').remove()"></button>
+                </div>
             </div>
             <div class="window-body">
-                <p>Reading drive C:/assets/ph-nature...</p>
-                <progress value="50" max="100"></progress>
+                <p>Select an item to view its properties.</p>
+                <div class="folder-grid" id="grid-${path.replace(/\//g, '-')}">
+                    Loading files...
+                </div>
             </div>
-        </div>
-    </div>
+            <div class="status-bar">
+                <p class="status-bar-field">Object(s) found</p>
+                <p class="status-bar-field">My Computer</p>
+            </div>
+        `;
+        document.body.appendChild(win);
 
-    <div class="taskbar">
-        <div class="start-button">
-            <img src="https://win95.xyz/icons/windows-0.png" style="width:16px; margin-right:5px;">
-            Start
-        </div>
-    </div>
+        try {
+            const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${path}`);
+            const files = await res.json();
+            const grid = document.getElementById(`grid-${path.replace(/\//g, '-')}`);
+            grid.innerHTML = ''; // Clear loading
 
-    <script>
-        // CONFIGURATION
-        const USER = 'ghxstxch';
-        const REPO = 'tyoung-site';
-        const FOLDER_PATH = 'assets/ph-nature';
-
-        async function loadAssets() {
-            const desktop = document.getElementById('desktop');
-            const loadingMsg = document.getElementById('loading-msg');
-
-            try {
-                // Fetch file list from GitHub API
-                const response = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${FOLDER_PATH}`);
-                const files = await response.json();
-
-                // Clear loading message
-                loadingMsg.style.display = 'none';
-
-                if (!Array.isArray(files)) {
-                    throw new Error("Folder not found or empty");
+            files.forEach(file => {
+                const item = document.createElement('div');
+                item.className = 'asset-preview';
+                
+                if (file.type === 'dir') {
+                    item.innerHTML = `<img src="https://win95.xyz/icons/directory_closed-4.png"><br>${file.name}`;
+                    item.onclick = () => openFolder(file.path, file.name);
+                } else if (file.name.match(/\.(jpg|jpeg|png|gif)$/i)) {
+                    item.innerHTML = `<img src="${file.download_url}"><br>${file.name}`;
                 }
+                grid.appendChild(item);
+            });
+        } catch (e) {
+            alert("Error accessing drive C: " + e.message);
+        }
+        
+        makeDraggable(win);
+    }
 
-                files.forEach(file => {
-                    // Only process images
-                    if (file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
-                        createWindow(file);
-                    }
-                });
+    // 3. Basic Dragging
+    function makeDraggable(el) {
+        let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        const header = el.querySelector('.title-bar');
+        header.onmousedown = dragMouseDown;
 
-            } catch (err) {
-                loadingMsg.innerHTML = `<div class="window-body">Error: ${err.message}</div>`;
-            }
+        function dragMouseDown(e) {
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            document.onmousemove = elementDrag;
         }
 
-        function createWindow(file) {
-            const desktop = document.getElementById('desktop');
-            const win = document.createElement('div');
-            win.className = 'window';
-            
-            // Build Win95 Window structure
-            win.innerHTML = `
-                <div class="title-bar">
-                    <div class="title-bar-text">ImgViewer - ${file.name}</div>
-                    <div class="title-bar-controls">
-                        <button aria-label="Minimize"></button>
-                        <button aria-label="Maximize"></button>
-                        <button aria-label="Close"></button>
-                    </div>
-                </div>
-                <div class="window-body">
-                    <img src="${file.download_url}" alt="${file.name}">
-                </div>
-                <div class="status-bar">
-                    <p class="status-bar-field">Type: Image</p>
-                    <p class="status-bar-field">Path: C:/${file.path}</p>
-                </div>
-            `;
-            desktop.appendChild(win);
+        function elementDrag(e) {
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            el.style.top = (el.offsetTop - pos2) + "px";
+            el.style.left = (el.offsetLeft - pos1) + "px";
         }
 
-        loadAssets();
-    </script>
+        function closeDragElement() {
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+</script>
+
 </body>
 </html>
