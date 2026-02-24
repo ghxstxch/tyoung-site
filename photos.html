@@ -3,64 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photos | T-Young</title>
+    <title>Gallery | T-Young</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { background-color: #0f172a; color: #f8fafc; }
-        .img-card { background: #1e293b; border: 1px solid #334155; overflow: hidden; border-radius: 12px; }
+        .gallery-item { transition: all 0.3s ease; }
+        .gallery-item:hover { transform: scale(1.02); filter: brightness(1.1); }
     </style>
 </head>
-<body class="p-8">
+<body class="p-6 md:p-12">
 
-    <header class="max-w-6xl mx-auto mb-12 flex justify-between items-end">
-        <div>
-            <a href="index.html" class="text-sky-500 hover:underline text-sm uppercase tracking-widest font-bold">← Back Home</a>
-            <h1 class="text-3xl font-bold mt-2">Gallery</h1>
-        </div>
+    <header class="max-w-6xl mx-auto mb-16">
+        <a href="index.html" class="text-sky-500 hover:text-sky-400 text-sm font-bold tracking-widest uppercase">← Return Home</a>
+        <h1 class="text-4xl font-bold mt-4">Project Gallery</h1>
+        <p class="text-slate-500 mt-2 italic">Automated sync with GitHub /assets folder.</p>
     </header>
 
-    <main id="gallery-container" class="max-w-6xl mx-auto space-y-12">
-        <div id="status" class="text-slate-500 animate-pulse">Scanning assets...</div>
+    <main id="main-content" class="max-w-6xl mx-auto space-y-20">
+        <div id="loading" class="flex items-center gap-3 text-slate-500">
+            <div class="w-4 h-4 border-2 border-sky-500 border-t-transparent rounded-full animate-spin"></div>
+            Fetching assets...
+        </div>
     </main>
 
     <script>
         const USER = 'ghxstxch';
         const REPO = 'tyoung-site';
 
-        async function loadGallery() {
-            const container = document.getElementById('gallery-container');
+        async function initGallery() {
+            const main = document.getElementById('main-content');
             try {
+                // Fetch directories in /assets
                 const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/assets`);
                 const items = await res.json();
-                document.getElementById('status').remove();
+                document.getElementById('loading').remove();
 
                 for (const item of items) {
                     if (item.type === 'dir') {
+                        // Create Section for Folder
                         const section = document.createElement('section');
                         section.innerHTML = `
-                            <h2 class="text-xl font-bold mb-4 border-b border-slate-800 pb-2 capitalize">${item.name.replace(/-/g, ' ')}</h2>
-                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="grid-${item.name}"></div>
+                            <h2 class="text-2xl font-bold mb-6 capitalize flex items-center gap-4">
+                                ${item.name.replace(/-/g, ' ')}
+                                <span class="h-px flex-1 bg-slate-800"></span>
+                            </h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="grid-${item.name}"></div>
                         `;
-                        container.appendChild(section);
-                        fetchImages(item.path, document.getElementById(`grid-${item.name}`));
+                        main.appendChild(section);
+                        
+                        // Populate with images
+                        populateGrid(item.path, document.getElementById(`grid-${item.name}`));
                     }
                 }
-            } catch (e) { console.error(e); }
+            } catch (err) {
+                console.error("API Error:", err);
+            }
         }
 
-        async function fetchImages(path, grid) {
+        async function populateGrid(path, grid) {
             const res = await fetch(`https://api.github.com/repos/${USER}/${REPO}/contents/${path}`);
             const files = await res.json();
+            
             files.forEach(file => {
                 if (file.name.match(/\.(jpg|jpeg|png|gif|webp)$/i)) {
-                    const div = document.createElement('div');
-                    div.className = 'img-card';
-                    div.innerHTML = `<img src="${file.download_url}" class="w-full h-40 object-cover hover:opacity-80 transition cursor-pointer">`;
-                    grid.appendChild(div);
+                    const card = document.createElement('div');
+                    card.className = 'gallery-item rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-xl';
+                    card.innerHTML = `
+                        <img src="${file.download_url}" class="w-full h-56 object-cover" loading="lazy">
+                        <div class="p-3 text-xs font-mono text-slate-500 truncate">${file.name}</div>
+                    `;
+                    grid.appendChild(card);
                 }
             });
         }
-        loadGallery();
+
+        initGallery();
     </script>
 </body>
 </html>
